@@ -40,7 +40,7 @@ TRAIN = {
   "shukriya", "assalam o alaikum", "Is the internet good there?"],
 }
 
-# ---- Held-out test set (different wording) for the evidence tab ----
+# ---- Held-out test set (different wording) for the evidence slide ----
 TEST = [
  ("What's the fee for one adult?", "price"), ("Wie viel müssen wir zahlen?", "price"), ("kitna paisa dena hoga", "price"),
  ("Is it cheaper for a group of six?", "price"), ("Where should we park?", "directions"),
@@ -86,8 +86,8 @@ def detect_lang(text):
 
 def classify(model, text):
     probs = model.predict_proba([text])[0]
-    classes = [str(c) for c in model.classes_]
-    order = sorted(zip(classes, [float(p) for p in probs]), key=lambda t: -t[1])
+    classes = list(model.classes_)
+    order = sorted(zip(classes, probs), key=lambda t: -t[1])
     return order[0][0], float(order[0][1]), order
 
 def needs_person(text, intent, conf, lang):
