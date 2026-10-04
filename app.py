@@ -4,7 +4,8 @@ import streamlit as st
 import core
 
 st.set_page_config(page_title="KahwaConnect", page_icon="☕", layout="wide")
-st.write("")  # ensures first render paints immediately
+st.title("☕ KahwaConnect")
+st.caption("Small AI for development · Tourism track · Human-in-the-loop · Not legal or financial advice")
 
 @st.cache_resource
 def get_model():
@@ -49,9 +50,6 @@ with st.sidebar:
     }
     st.divider()
     st.caption("Mode: **offline core**. The classifier is a ~100 KB TF-IDF + logistic regression model that runs on-device. No internet is needed for any feature on this page.")
-
-st.title("☕ KahwaConnect")
-st.caption("Small AI for development · Tourism track · Human-in-the-loop · Not legal or financial advice")
 
 tab1, tab2, tab3 = st.tabs(["📨 Visitor inbox", "⭐ Review insights", "📊 Evidence & limits"])
 
