@@ -4,11 +4,17 @@ import streamlit as st
 import core
 
 st.set_page_config(page_title="KahwaConnect", page_icon="☕", layout="wide")
+st.write("")  # ensures first render paints immediately
 
 @st.cache_resource
 def get_model():
     return core.train()
-model = get_model()
+
+try:
+    model = get_model()
+except Exception as e:  # show a visible error instead of a blank page
+    st.error(f"Model failed to load: {e}")
+    st.stop()
 
 SAMPLES = [
     "Hello! How much does the farm tour cost for 2 people?",
@@ -91,7 +97,7 @@ with tab1:
     st.divider()
     st.subheader(f"📤 Outbox ({len(st.session_state.outbox)})")
     if st.session_state.outbox:
-        st.dataframe(pd.DataFrame(st.session_state.outbox), width="stretch")
+        st.dataframe(pd.DataFrame(st.session_state.outbox))
         st.download_button("Download outbox (JSON)", json.dumps(st.session_state.outbox, ensure_ascii=False, indent=2),
                            "outbox.json", "application/json")
         if st.button("Clear outbox"):
@@ -137,7 +143,7 @@ with tab3:
     m1.metric("Topic accuracy", f"{acc:.0%}")
     m2.metric("Sent to a person", f"{asked}/20")
     m3.metric("Wrong AND auto-answered", f"{wrong_auto}/20")
-    st.dataframe(pd.DataFrame(rows), width="stretch")
+    st.dataframe(pd.DataFrame(rows))
     st.markdown("""
 **Why AI, not just SMS or a search?** Visitors write in English, German and Roman Urdu, with typos and mixed words. A keyword list breaks on this; a small character-level model generalises across spellings and languages, and gives a confidence that powers the "ask a person" fail-safe.
 
