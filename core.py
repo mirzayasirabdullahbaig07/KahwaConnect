@@ -86,8 +86,8 @@ def detect_lang(text):
 
 def classify(model, text):
     probs = model.predict_proba([text])[0]
-    classes = list(model.classes_)
-    order = sorted(zip(classes, probs), key=lambda t: -t[1])
+    classes = [str(c) for c in model.classes_]
+    order = sorted(zip(classes, [float(p) for p in probs]), key=lambda t: -t[1])
     return order[0][0], float(order[0][1]), order
 
 def needs_person(text, intent, conf, lang):
